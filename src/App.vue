@@ -1,14 +1,34 @@
 <script>
-    
+    export default {
+      data() {
+        return {
+          city: "",
+          errors: ""
+        }
+      },
+      computed: {
+        cityName() {
+          return "«" + this.city + "»"
+        }
+      },
+      methods: {
+        getWeather() {
+          if(this.city.trim().length < 2)
+
+          return false
+        }
+      }
+    }
 </script>
 
 <template>
     <div class="wrapper">
       <header>
-        <h1>Weather app</h1>
-        <p>Find out the weather in your city</p>
-        <input type="text"  placeholder="Enter city">
-        <button>Get the weather</button>
+        <h1>Weather app </h1>
+        <p>Find out the weather in {{ city == ""?" your city" : cityName }}</p>
+        <input type="text" v-model="city" placeholder="Enter city">
+        <button v-if="city != ''" @click="getWeather()">Get the weather</button>
+        <button disabled v-else="city != ''">Enter city name</button>
       </header>
     </div>
 </template>
@@ -58,6 +78,11 @@ h1 {
   margin-left: 20px;
   cursor: pointer;
   transition: transform 500ms ease;
+}
+ 
+.wrapper button:disabled {
+  background-color: #8f7c25;
+  cursor: not-allowed;
 }
 
 .wrapper button:hover {

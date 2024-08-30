@@ -5,10 +5,11 @@
 }
 
 body {
+  font-family: "Lucida Handwriting", Cursive, sans-serif;
   width: 100%;
   min-height: 100vh;
   background: rgb(1,0,22);
-background: linear-gradient(90deg, rgba(1,0,22,1) 0%, rgba(32,34,59,1) 50%, rgba(1,0,22,1) 100%);
+  background: linear-gradient(90deg, rgba(1,0,22,1) 0%, rgba(32,34,59,1) 50%, rgba(1,0,22,1) 100%);
   display: flex;
   justify-content: center;
   align-items: center;
