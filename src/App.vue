@@ -26,7 +26,7 @@
       <header>
         <h1>Weather app </h1>
         <p>Find out the weather in {{ city == ""?" your city" : cityName }}</p>
-        <input type="text" v-model="city" placeholder="Enter city">
+        <input type="text" v-model="city" placeholder="Enter city hui">
         <button v-if="city != ''" @click="getWeather()">Get the weather</button>
         <button disabled v-else="city != ''">Enter city name</button>
       </header>
