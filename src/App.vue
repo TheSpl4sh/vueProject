@@ -14,7 +14,7 @@
       methods: {
         getWeather() {
           if(this.city.trim().length < 2)
-
+          this.error = "Need more than 1 symbol"
           return false
         }
       }
