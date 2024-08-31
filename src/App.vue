@@ -5,16 +5,30 @@ import axios from 'axios'
         return {
           city: "",
           error: "",
-          null: ""
+          info: null
         }
       },
       computed: {
         cityName() {
           return "«" + this.city + "»"
-        }
+        },
+        showTemp() {
+          return "Temperature: " + this.info.main.temp
+        },
+        showFeelsLike() {
+          return "Feels like: " + this.info.main.feels_like
+        },
+        showMinTemp() {
+          return "Minimal temperature: " + this.info.main.temp_min
+        },
+        showMaxTemp() {
+          return "Maximum temperature: " + this.info.main.temp_max
+        },
       },
       methods: {
         getWeather() {
+          this.info = null
+
           if(this.city.trim().length < 2) {
             this.error = "Need more than 1 symbol"
             return false
@@ -23,7 +37,12 @@ import axios from 'axios'
           this.error = ""
 
           axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=8ae705b2f3de7175cdafa1fcfcc4cf31`)
-            .then(res => (this.info = res))
+            .then(res => (this.info = res.data))
+            .catch(error => {
+              if(error.status == 404 ) {
+                this.error = "Incorrect city name"
+              }
+            })
         }
       }
     }
@@ -39,7 +58,14 @@ import axios from 'axios'
         <button disabled v-else="city != ''">Enter city name</button>
         <p class="error"> {{ error }}</p>
 
-        <p v-show="info != null">{{ info }}</p>
+        <section v-if="info != null">
+          <p >{{ showTemp }}</p>
+          <p >{{ showFeelsLike }}</p>
+          <p >{{ showMinTemp }}</p>
+          <p >{{ showMaxTemp }}</p>
+
+
+        </section>
       </header>
     </div>
 </template>
@@ -51,7 +77,12 @@ import axios from 'axios'
 }
 
 .wrapper {
-  width: 900px;
+  max-width: 1368px;
+  padding: 30px;
+}
+
+header {
+  max-width: 700px;
   height: 500px;
   border-radius: 50px;
   padding: 20px;
@@ -60,7 +91,7 @@ import axios from 'axios'
   text-align: center;
 }
 
-.wrapper p {
+header p {
   margin-top: 20px;
 }
 
@@ -68,7 +99,7 @@ h1 {
   margin-top: 50px;
 }
 
-.wrapper input {
+header input {
   margin-top: 30px;
   background-color: transparent;
   border: 0;
@@ -80,11 +111,11 @@ h1 {
   transition: border-bottom-color 0.3s ease;
 }
 
-.wrapper input:focus {
+header input:focus {
   border-bottom-color: white;
 }
 
-.wrapper button {
+header button {
   background-color: #42a232;
   color: white;
   border-radius: 10px;
@@ -95,13 +126,21 @@ h1 {
   transition: transform 500ms ease;
 }
  
-.wrapper button:disabled {
+header button:disabled {
   background-color: #8f7c25;
   cursor: not-allowed;
 }
 
-.wrapper button:hover {
+header button:hover {
   transform: scale(1.1) translate(-5px);
+}
+
+@media(min-width: 768px) {
+  .wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 </style>
