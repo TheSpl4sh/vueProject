@@ -137,9 +137,11 @@ header button:hover {
 
 @media(min-width: 768px) {
   .wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    max-width: 100%;
+  }
+
+  header {
+    margin: auto;
   }
 }
 
