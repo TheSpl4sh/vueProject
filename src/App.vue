@@ -1,9 +1,11 @@
 <script>
+import axios from 'axios'
     export default {
       data() {
         return {
           city: "",
-          errors: ""
+          error: "",
+          null: ""
         }
       },
       computed: {
@@ -13,9 +15,15 @@
       },
       methods: {
         getWeather() {
-          if(this.city.trim().length < 2)
-          this.error = "Need more than 1 symbol"
-          return false
+          if(this.city.trim().length < 2) {
+            this.error = "Need more than 1 symbol"
+            return false
+          }
+
+          this.error = ""
+
+          axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${this.city}&units=metric&appid=8ae705b2f3de7175cdafa1fcfcc4cf31`)
+            .then(res => (this.info = res))
         }
       }
     }
@@ -26,15 +34,22 @@
       <header>
         <h1>Weather app </h1>
         <p>Find out the weather in {{ city == ""?" your city" : cityName }}</p>
-        <input type="text" v-model="city" placeholder="Enter city hui">
+        <input type="text" v-model="city" placeholder="Enter city">
         <button v-if="city != ''" @click="getWeather()">Get the weather</button>
         <button disabled v-else="city != ''">Enter city name</button>
+        <p class="error"> {{ error }}</p>
+
+        <p v-show="info != null">{{ info }}</p>
       </header>
     </div>
 </template>
 
 
 <style scoped>
+.error {
+  color: red;
+}
+
 .wrapper {
   width: 900px;
   height: 500px;
